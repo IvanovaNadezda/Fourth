@@ -26,8 +26,9 @@ public class FragmentScreen3 extends Fragment {
 
     private static final HashMap<String, Integer> IMAGE_RESOURCE_MAP = new HashMap<>();
 
-    // Хранилище картинок корма для сов
+    // хэш-мап для подгрузки drawble картинок книг
     static {
+        // сами книги
         IMAGE_RESOURCE_MAP.put("mouse.png", R.drawable.mouse);
         IMAGE_RESOURCE_MAP.put("beatle.png", R.drawable.beatle);
     }
@@ -52,18 +53,18 @@ public class FragmentScreen3 extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             // Определяем слушателя касания элемента в RecyclerView
             @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent e) {
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
                 // Проверяем, что был сделан щелчок по элементу списка
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                View child = rv.findChildViewUnder(e.getX(), e.getY());
                 if (child != null && e.getAction() == MotionEvent.ACTION_UP) {
                     // Определяем позицию выбранного элемента в списке
-                    int position = recyclerView.getChildAdapterPosition(child);
+                    int position = rv.getChildAdapterPosition(child);
                     // Получаем объект Item по позиции
                     Item item = items.get(position);
                     // Показываем Toast сообщение с названием книги
-                    Toast.makeText(getContext(), "Нажали на: " + item.getText(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Нажатие на: " + item.getText(), Toast.LENGTH_SHORT).show();
                     // Выводим сообщение в Logcat
-                    Log.d("FragmentScreenThree", "Нажали на: " + item.getText());
+                    Log.d("FragmentScreen3", "Нажатие на: " + item.getText());
                     // Возвращаем true, чтобы сообщить, что касание обработано
                     return true;
                 }
@@ -81,53 +82,45 @@ public class FragmentScreen3 extends Fragment {
             }
         });
 
-        // Массив для картинок
-        items = new ArrayList<>();
-        // Случано выбираем картинку
-        random = new Random();
+        items = new ArrayList<>();// массив уже для обложек
+        random = new Random();// модуль для случайного выбора обложки
 
-        String[] fodders;
+        String[] fantasyBooks;// массив для названий книг
         try {
-            fodders = getFodders(getContext()).toArray(new String[getFodders(getContext()).size()]);
-            // Построчное ситывание строк из файла
+            fantasyBooks = getBooksFromFile(getContext()).toArray(new String[getBooksFromFile(getContext()).size()]);
+            // вызов метода считывания книг построчно из файла
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         String[] imageNames = {"mouse.png", "beatle.png"};
 
-        // В цикле устанавливаем картинку случайно и вид корма к ней
-        for (int i = 0; i < 200; i++) {
-            // Рандомное задание картинки
-            int randomIndex = random.nextInt(imageNames.length);
+        for (int i = 0; i < 200; i++) {// цикл по всем 200 эл-там ListView
+            int randomIndex = random.nextInt(imageNames.length);// рандомайз картинки
             String imageName = imageNames[randomIndex];
             int imageResourceId = IMAGE_RESOURCE_MAP.get(imageName);
-            // Установка картинки и корма
-            Item item = new Item(imageResourceId, fodders[i]);
+            Item item = new Item(imageResourceId, fantasyBooks[i]);// установка картинки и названия книги
             items.add(item);
         }
 
-        // Создание адаптера
-        adapter = new Adapter2(items);
-        // Установка адаптера
-        recyclerView.setAdapter(adapter);
+        adapter = new Adapter2(items);// создание адаптера
+        recyclerView.setAdapter(adapter);// установка адаптера
 
 
     }
 
-    // Построчное считывание строк из файла
-    public ArrayList<String> getFodders(Context context) throws IOException
+    public ArrayList<String> getBooksFromFile(Context context) throws IOException//метод для чтения книг построчно из файла
     {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             String line;
             AssetManager assetManager = context.getAssets();
             InputStreamReader istream = new InputStreamReader(assetManager.open("fodders.txt"));
-            BufferedReader bufferedReader = new BufferedReader(istream);
-            while ((line = bufferedReader.readLine()) != null){
+            BufferedReader in = new BufferedReader(istream);
+            while ((line = in.readLine()) != null){
                 arrayList.add(line);
             }
-            bufferedReader.close();
+            in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
