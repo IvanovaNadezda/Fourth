@@ -49,7 +49,37 @@ public class FragmentScreen3 extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            // Определяем слушателя касания элемента в RecyclerView
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent e) {
+                // Проверяем, что был сделан щелчок по элементу списка
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null && e.getAction() == MotionEvent.ACTION_UP) {
+                    // Определяем позицию выбранного элемента в списке
+                    int position = recyclerView.getChildAdapterPosition(child);
+                    // Получаем объект Item по позиции
+                    Item item = items.get(position);
+                    // Показываем Toast сообщение с названием книги
+                    Toast.makeText(getContext(), "Нажали на: " + item.getText(), Toast.LENGTH_SHORT).show();
+                    // Выводим сообщение в Logcat
+                    Log.d("FragmentScreenThree", "Нажали на: " + item.getText());
+                    // Возвращаем true, чтобы сообщить, что касание обработано
+                    return true;
+                }
+                // Возвращаем false, чтобы сообщить, что касание не было обработано
+                return false;
+            }
+            //Методы onTouchEvent и onRequestDisallowInterceptTouchEvent добавлены для реализации
+            // интерфейса RecyclerView.OnItemTouchListener.
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+            }
 
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+            }
+        });
 
         // Массив для картинок
         items = new ArrayList<>();

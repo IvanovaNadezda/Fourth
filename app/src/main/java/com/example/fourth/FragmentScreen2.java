@@ -44,6 +44,14 @@ public class FragmentScreen2 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.listview);
 
+        // Обработчик нажатия на элемент ListView
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            // Получение выбранного элемента
+            Item item = (Item) parent.getItemAtPosition(position);
+            Toast.makeText(getContext(), "Нажатие на: " + item.getText(), Toast.LENGTH_SHORT).show();
+            Log.d("FragmentScreenTwo", "Нажатие на: " + item.getText());
+        });
+
         // Массив для названия сов
         String [] owls ;
         try {
