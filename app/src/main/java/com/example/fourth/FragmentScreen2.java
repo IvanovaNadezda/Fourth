@@ -44,33 +44,40 @@ public class FragmentScreen2 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.listview);
-        //обработчик нажатия на элемент ListView
+        // Обработчик нажатия на элемент ListView
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             // Получение выбранного элемента
             Item item = (Item) parent.getItemAtPosition(position);
             Toast.makeText(getContext(), "Нажатие на: " + item.getText(), Toast.LENGTH_SHORT).show();
             Log.d("FragmentScreenTwo", "Нажатие на: " + item.getText());
         });
-        String [] detectiveBooks ;//массив для названия сов
+        // Массив для названия сов
+        String [] detectiveBooks ;
         try {
             detectiveBooks = getBooksFromFile(getContext()).toArray(new String[getBooksFromFile(getContext()).size()]);
-            //вызов метода считывания книг построчно из файла
+            // Метод считывания строк построчно из файла
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        random = new Random();//модуль для случайного выбора картинки совы
-        ArrayList<Item> items = new ArrayList<>();//массив уже для обложек
+        // Cлучайный выбор картинки совы
+        random = new Random();
+        ArrayList<Item> items = new ArrayList<>();
         String[] imageNames = {"owl1.png", "owl2.png", "owl3.png", "owl4.png", "owl5.png", "owl6.png"};
 
-        for (int i = 0; i < 200; i++) {//цикл по всем 200 эл-там ListView
-            int randomIndex = random.nextInt(imageNames.length);//рандомайз картинки
+        // Цикл по всем 200 эл-там ListView
+        for (int i = 0; i < 200; i++) {
+            // Рандомное задание картинки
+            int randomIndex = random.nextInt(imageNames.length);
             String imageName = imageNames[randomIndex];
             int imageResourceId = IMAGE_RESOURCE_MAP.get(imageName);
-            Item item = new Item(imageResourceId, detectiveBooks[i]);//установка картинки и названия книги
+            // Установка картинки и вида совы
+            Item item = new Item(imageResourceId, detectiveBooks[i]);
             items.add(item);
         }
-        Adapter adapter = new Adapter(getContext(), R.layout.list_view, items);//создание адаптера
-        listView.setAdapter(adapter);//установка адаптера
+        // Создание адаптера
+        Adapter adapter = new Adapter(getContext(), R.layout.list_view, items);
+        // Установка адаптера
+        listView.setAdapter(adapter);
 
     }
     // Читаем корма построчно из файла
