@@ -24,7 +24,6 @@ public class FragmentScreen2 extends Fragment {
     ListView listView;
     Random random;
     private static final HashMap<String, Integer> IMAGE_RESOURCE_MAP = new HashMap<>();
-    //хэш-мап для подгрузки drawble картинок книг
     static {
         //сами книги
         IMAGE_RESOURCE_MAP.put("owl1.png", R.drawable.owl1);
