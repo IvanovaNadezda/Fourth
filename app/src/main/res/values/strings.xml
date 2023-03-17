@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Fourth</string>
+    <string name="fodderToOwls">Корм для сов</string>
+    <string name="typeOfOwl">Виды сов</string>
+    <string name="superInfoAboutOwl">Полезные данные о совах</string>
+    <string name="nameOfObject">Название объекта</string>
 </resources>
