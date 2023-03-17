@@ -43,17 +43,11 @@ public class FragmentScreen2 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.listview);
-        // Обработчик нажатия на элемент ListView
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
-            // Получение выбранного элемента
-            Item item = (Item) parent.getItemAtPosition(position);
-            Toast.makeText(getContext(), "Нажатие на: " + item.getText(), Toast.LENGTH_SHORT).show();
-            Log.d("FragmentScreenTwo", "Нажатие на: " + item.getText());
-        });
+
         // Массив для названия сов
-        String [] detectiveBooks ;
+        String [] owls ;
         try {
-            detectiveBooks = getBooksFromFile(getContext()).toArray(new String[getBooksFromFile(getContext()).size()]);
+            owls = getOwls(getContext()).toArray(new String[getOwls(getContext()).size()]);
             // Метод считывания строк построчно из файла
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -70,7 +64,7 @@ public class FragmentScreen2 extends Fragment {
             String imageName = imageNames[randomIndex];
             int imageResourceId = IMAGE_RESOURCE_MAP.get(imageName);
             // Установка картинки и вида совы
-            Item item = new Item(imageResourceId, detectiveBooks[i]);
+            Item item = new Item(imageResourceId, owls[i]);
             items.add(item);
         }
         // Создание адаптера
@@ -79,19 +73,19 @@ public class FragmentScreen2 extends Fragment {
         listView.setAdapter(adapter);
 
     }
-    // Читаем корма построчно из файла
-    public ArrayList<String> getBooksFromFile(Context context) throws IOException
+    // Читаем типы сов построчно из файла
+    public ArrayList<String> getOwls(Context context) throws IOException
     {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             String line;
             AssetManager assetManager = context.getAssets();
             InputStreamReader istream = new InputStreamReader(assetManager.open("owls.txt"));
-            BufferedReader in = new BufferedReader(istream);
-            while ((line = in.readLine()) != null){
+            BufferedReader bufferedReader = new BufferedReader(istream);
+            while ((line = bufferedReader.readLine()) != null){
                 arrayList.add(line);
             }
-            in.close();
+            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
