@@ -52,9 +52,9 @@ public class FragmentScreen2 extends Fragment {
             Log.d("FragmentScreen2", "Нажатие на: " + item.getText());
         });
         // Массив для названия сов
-        String [] detectiveBooks ;
+        String [] owls ;
         try {
-            detectiveBooks = getOwls(getContext()).toArray(new String[getOwls(getContext()).size()]);
+            owls = getOwls(getContext()).toArray(new String[getOwls(getContext()).size()]);
             // Вызов метода считывания строк построчно из файла
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -70,7 +70,7 @@ public class FragmentScreen2 extends Fragment {
             int randomIndex = random.nextInt(imageNames.length);
             String imageName = imageNames[randomIndex];
             int imageResourceId = IMAGE_RESOURCE_MAP.get(imageName);
-            Item item = new Item(imageResourceId, detectiveBooks[i]);
+            Item item = new Item(imageResourceId, owls[i]);
             items.add(item);
         }
         // Создание адаптера

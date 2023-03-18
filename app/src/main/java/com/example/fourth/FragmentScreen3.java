@@ -95,7 +95,7 @@ public class FragmentScreen3 extends Fragment {
 
         String[] imageNames = {"mouse.png", "beatle.png"};
 
-        // Цикл по всем элементам ListView с установкой картинки и названия корма
+        // Цикл по всем элементам RecyclerView с установкой картинки и названия корма
         for (int i = 0; i < 200; i++) {
             int randomIndex = random.nextInt(imageNames.length);
             String imageName = imageNames[randomIndex];
