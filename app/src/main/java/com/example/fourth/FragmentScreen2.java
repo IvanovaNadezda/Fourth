@@ -24,7 +24,7 @@ public class FragmentScreen2 extends Fragment {
     ListView listView;
     Random random;
     private static final HashMap<String, Integer> IMAGE_RESOURCE_MAP = new HashMap<>();
-    //хэш-мап для подгрузки drawble картинок книг
+
     static {
         //сами книги
         IMAGE_RESOURCE_MAP.put("owl1.png", R.drawable.owl1);
@@ -44,47 +44,54 @@ public class FragmentScreen2 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.listview);
-        //обработчик нажатия на элемент ListView
+        // Обработчик нажатия на элемент ListView
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             // Получение выбранного элемента
             Item item = (Item) parent.getItemAtPosition(position);
             Toast.makeText(getContext(), "Нажатие на: " + item.getText(), Toast.LENGTH_SHORT).show();
             Log.d("FragmentScreen2", "Нажатие на: " + item.getText());
         });
-        String [] detectiveBooks ;//массив для названия сов
+        // Массив для названия сов
+        String [] detectiveBooks ;
         try {
-            detectiveBooks = getBooksFromFile(getContext()).toArray(new String[getBooksFromFile(getContext()).size()]);
-            //вызов метода считывания книг построчно из файла
+            detectiveBooks = getOwls(getContext()).toArray(new String[getOwls(getContext()).size()]);
+            // Вызов метода считывания строк построчно из файла
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        random = new Random();//модуль для случайного выбора картинки совы
-        ArrayList<Item> items = new ArrayList<>();//массив уже для обложек
+        // Модуль для случайного выбора картинки
+        random = new Random();
+        // Массив уже для картинок
+        ArrayList<Item> items = new ArrayList<>();
         String[] imageNames = {"owl1.png", "owl2.png", "owl3.png", "owl4.png", "owl5.png", "owl6.png"};
 
-        for (int i = 0; i < 200; i++) {//цикл по всем 200 эл-там ListView
-            int randomIndex = random.nextInt(imageNames.length);//рандомайз картинки
+        // Цикл по всем элементам ListView с установкой картинки и названия совы
+        for (int i = 0; i < 200; i++) {
+            int randomIndex = random.nextInt(imageNames.length);
             String imageName = imageNames[randomIndex];
             int imageResourceId = IMAGE_RESOURCE_MAP.get(imageName);
-            Item item = new Item(imageResourceId, detectiveBooks[i]);//установка картинки и названия книги
+            Item item = new Item(imageResourceId, detectiveBooks[i]);
             items.add(item);
         }
-        Adapter adapter = new Adapter(getContext(), R.layout.list_view, items);//создание адаптера
-        listView.setAdapter(adapter);//установка адаптера
+        // Создание адаптера
+        Adapter adapter = new Adapter(getContext(), R.layout.list_view, items);
+        // Установка адаптера
+        listView.setAdapter(adapter);
 
     }
-    public ArrayList<String> getBooksFromFile(Context context) throws IOException//метод для кормов построчно из файла
+    // Метод для считывания сов построчно из файла
+    public ArrayList<String> getOwls(Context context) throws IOException
     {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             String line;
             AssetManager assetManager = context.getAssets();
             InputStreamReader istream = new InputStreamReader(assetManager.open("owls.txt"));
-            BufferedReader in = new BufferedReader(istream);
-            while ((line = in.readLine()) != null){
+            BufferedReader bufferedReader = new BufferedReader(istream);
+            while ((line = bufferedReader.readLine()) != null){
                 arrayList.add(line);
             }
-            in.close();
+            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

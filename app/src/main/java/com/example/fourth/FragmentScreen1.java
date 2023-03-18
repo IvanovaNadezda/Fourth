@@ -25,27 +25,21 @@ public class FragmentScreen1 extends Fragment {
         binding = Screen1Binding.inflate(inflater, container, false);
 
         // Переход на второй экран FragmentScreen2
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction().
-                        setReorderingAllowed(true);
-                fragmentTransaction.replace(R.id.fragment_view, new FragmentScreen2());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+        binding.button.setOnClickListener(view -> {
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction().
+                    setReorderingAllowed(true);
+            fragmentTransaction.replace(R.id.fragment_view, new FragmentScreen2());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
         // Переход на третий экран FragmentScreen3
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction().
-                        setReorderingAllowed(true);
-                fragmentTransaction.replace(R.id.fragment_view, new FragmentScreen3());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+        binding.button2.setOnClickListener(view -> {
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction().
+                    setReorderingAllowed(true);
+            fragmentTransaction.replace(R.id.fragment_view, new FragmentScreen3());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
         return binding.getRoot();
     }
